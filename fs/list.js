@@ -1,8 +1,13 @@
 var fs = require("fs");
-fs.readdir('./lib', function(err, files) {
-if (err) {
-throw err;
-}
-console.log(files);
+var path = require("path");
+fs.readdir("./lib", function(err, files) {
+files.forEach(function(fileName) {
+var file = path.join(__dirname, "lib", fileName);
+var stats = fs.statSync(file);
+if(stats.isFile() && fileName !== ".DS_Store") {
+fs.readFile(file, "UTF-8", function(err, contents) {
+console.log(contents);
 });
-console.log("Reading Files...");
+}
+});
+});
